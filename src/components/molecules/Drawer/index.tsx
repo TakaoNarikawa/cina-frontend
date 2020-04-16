@@ -22,7 +22,7 @@ const AccountInfo = (
         <Avatar size={64} icon={<UserOutlined />} />
       </Col>
       <Col span={16}>
-        <Typography style={{ height: "64px", lineHeight: "64px" }}>わんぱたろう</Typography>
+        <Typography style={{ height: "64px", lineHeight: "64px" }}>めいだいたろう</Typography>
       </Col>
     </Row>
   </>
@@ -53,12 +53,7 @@ const CustomDrawer = (props: Props) => {
       <Menu style={{ borderRight: "0px" }}>
         <Menu.Item>
           <PushCloseButton history={history} onClose={props.onClose} to="/booked-jobpost">
-            <Typography>お気に入り</Typography>
-          </PushCloseButton>
-        </Menu.Item>
-        <Menu.Item>
-          <PushCloseButton history={history} onClose={props.onClose} to="/applied-jobpost">
-            <Typography>応募済み企業</Typography>
+            <Typography>設定</Typography>
           </PushCloseButton>
         </Menu.Item>
         <Menu.Item>
