@@ -2,8 +2,16 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form, Input, Radio, Select, Upload } from "antd";
 import React, { useState, useCallback } from "react";
 import { beforeUpload, getBase64 } from "src/utils/processImage";
+import styled from "styled-components";
 
 const { Option } = Select;
+
+const Wrapper = styled.div`
+  max-width: 600px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+`;
 
 const SingleFormItem = ({
   id,
@@ -152,9 +160,9 @@ const ProfileImageForm: React.FC = () => {
 };
 
 const ProfileForm: React.FC = () => (
-  <>
+  <Wrapper>
     <NameForm />
     <EmailForm />
-  </>
+  </Wrapper>
 );
 export default ProfileForm;
