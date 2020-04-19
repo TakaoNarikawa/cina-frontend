@@ -1,9 +1,6 @@
-import { Skeleton, Button, Typography, Radio } from "antd";
+import { Button, Typography } from "antd";
 import React from "react";
-import assignDeep from "object-assign-deep";
 import styled from "styled-components";
-import { BASE } from "src/utils/space";
-import { DownloadOutlined } from "@ant-design/icons";
 
 const { Text } = Typography;
 

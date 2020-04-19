@@ -1,17 +1,13 @@
 {
-  "name": "onepile-intern-mock",
+  "name": "cina-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/react-hooks": "^3.1.3",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "@types/object-assign-deep": "^0.4.0",
     "antd": "^4.0.2",
-    "apollo-boost": "^0.4.7",
-    "graphql": "^14.6.0",
-    "moment": "^2.24.0",
     "object-assign-deep": "^0.4.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
