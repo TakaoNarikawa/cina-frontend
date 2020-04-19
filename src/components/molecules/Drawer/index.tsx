@@ -40,7 +40,7 @@ const PushCloseButton: React.FC<PushCloseButtonProps> = ({ children, history, on
   );
 };
 
-const CustomDrawer = (props: Props) => {
+const CustomDrawer: React.FC<Props> = (props) => {
   const history = useHistory();
   return (
     <Drawer

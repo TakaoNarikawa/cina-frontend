@@ -66,7 +66,7 @@ const HamburgerIcon = styled(IoIosMenu)`
   margin: 10px;
 `;
 
-function Routes() {
+const Routes: React.FC = () => {
   const { pathname } = useLocation();
   useEffect(() => window.scrollTo(0, 0), [pathname]);
   return (
@@ -84,9 +84,9 @@ function Routes() {
       ))}
     </Switch>
   );
-}
+};
 
-function App() {
+const App: React.FC = () => {
   const [drawerVidible, setDrawerVisible] = useState(false);
   const handleOpenDrawer = useCallback(() => setDrawerVisible(true), []);
   const handleCloseDrawer = useCallback(() => setDrawerVisible(false), []);
@@ -129,6 +129,6 @@ function App() {
       </StyledLayout>
     </Router>
   );
-}
+};
 
 export default App;

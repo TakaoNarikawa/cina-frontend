@@ -27,25 +27,21 @@ const DescTh = styled.th`
   word-break: break-all;
 `;
 
-const DescriptionTable = (props: Props) => {
-  const { contents } = props;
-  return (
-    <Table>
-      {contents.map(([col, desc], i) =>
-        i > 0 ? (
-          <tr>
-            <ColTd>{col}</ColTd>
-            <DescTd>{desc}</DescTd>
-          </tr>
-        ) : (
-          <tr>
-            <ColTh>{col}</ColTh>
-            <DescTh>{desc}</DescTh>
-          </tr>
-        ),
-      )}
-    </Table>
-  );
-};
-
+const DescriptionTable: React.FC<Props> = ({ contents }) => (
+  <Table>
+    {contents.map(([col, desc], i) =>
+      i > 0 ? (
+        <tr>
+          <ColTd>{col}</ColTd>
+          <DescTd>{desc}</DescTd>
+        </tr>
+      ) : (
+        <tr>
+          <ColTh>{col}</ColTh>
+          <DescTh>{desc}</DescTh>
+        </tr>
+      )
+    )}
+  </Table>
+);
 export default DescriptionTable;

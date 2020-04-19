@@ -14,12 +14,10 @@ type Props = {
   joined?: boolean;
 };
 
-const SpaceSelectButton = ({ name, joined }: Props) => {
-  return (
-    <StyledButton type={joined ? "primary" : "default"} shape="round" size="large">
-      <span>{name}</span>
-    </StyledButton>
-  );
-};
+const SpaceSelectButton: React.FC<Props> = ({ name, joined }) => (
+  <StyledButton type={joined ? "primary" : "default"} shape="round" size="large">
+    <span>{name}</span>
+  </StyledButton>
+);
 
 export default SpaceSelectButton;

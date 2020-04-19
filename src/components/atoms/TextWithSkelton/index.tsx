@@ -15,7 +15,7 @@ type Props = {
   skeletonProps?: any;
 };
 
-const WithSkeleton = (props: Props) => {
+const WithSkeleton: React.FC<Props> = (props) => {
   const defaultProps = {
     skeletonProps: {
       paragraph: { rows: 1 },

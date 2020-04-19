@@ -14,26 +14,23 @@ type Props = {
   style: any;
 };
 
-const SelectWithSearch = (props: Props) => {
-  const { placeholder, itemList, style } = props;
-  return (
-    <Select
-      showSearch
-      style={style}
-      size="large"
-      placeholder={placeholder}
-      optionFilterProp="children"
-      filterOption={(input, option) =>
-        option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-      }
-    >
-      {itemList.map((item, i) => (
-        <Option key={i} value={item.id}>
-          {item.displayName}
-        </Option>
-      ))}
-    </Select>
-  );
-};
+const SelectWithSearch: React.FC<Props> = ({ placeholder, itemList, style }) => (
+  <Select
+    showSearch
+    style={style}
+    size="large"
+    placeholder={placeholder}
+    optionFilterProp="children"
+    filterOption={(input, option) =>
+      option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+    }
+  >
+    {itemList.map((item, i) => (
+      <Option key={i} value={item.id}>
+        {item.displayName}
+      </Option>
+    ))}
+  </Select>
+);
 
 export default SelectWithSearch;

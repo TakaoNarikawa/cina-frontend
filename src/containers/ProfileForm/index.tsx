@@ -13,20 +13,20 @@ const Wrapper = styled.div`
   margin-right: auto;
 `;
 
-const SingleFormItem = ({
-  id,
-  displayName,
-  type = "string",
-  message = `${displayName}は必須です。`,
-  required = true,
-  rules = [],
-}: {
+const SingleFormItem: React.FC<{
   id: string;
   displayName: string;
   type?: string;
   message?: string;
   required?: boolean;
   rules?: any[];
+}> = ({
+  id,
+  displayName,
+  type = "string",
+  message = `${displayName}は必須です。`,
+  required = true,
+  rules = [],
 }) => (
   <Form.Item
     name={id}
@@ -43,15 +43,7 @@ const SingleFormItem = ({
   </Form.Item>
 );
 
-const DoubleFormItem = ({
-  name,
-  id,
-  displayName,
-  type = "string",
-  message = [`${displayName[0]}は必須です。`, `${displayName[1]}は必須です。`],
-  required = false,
-  rules = [],
-}: {
+const DoubleFormItem: React.FC<{
   name: string;
   id: [string, string];
   displayName: [string, string];
@@ -59,6 +51,14 @@ const DoubleFormItem = ({
   message?: [string, string];
   required?: boolean;
   rules?: any[];
+}> = ({
+  name,
+  id,
+  displayName,
+  type = "string",
+  message = [`${displayName[0]}は必須です。`, `${displayName[1]}は必須です。`],
+  required = false,
+  rules = [],
 }) => (
   <Form.Item
     label={
