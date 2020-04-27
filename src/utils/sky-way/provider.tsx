@@ -72,8 +72,8 @@ const Provider: React.FC<ProviderProps> = ({ apiKey, onRecieveCall, onError, chi
       });
     }
     navigator.mediaDevices.enumerateDevices().then((deviceInfos) => {
-      const audioInfos = deviceInfos.filter((d) => d.kind == "audioinput");
-      const videoInfos = deviceInfos.filter((d) => d.kind == "videoinput");
+      const audioInfos = deviceInfos.filter((d) => d.kind === "audioinput");
+      const videoInfos = deviceInfos.filter((d) => d.kind === "videoinput");
       setAudioSourceList(audioInfos);
       setVideoSourceList(videoInfos);
       const defaultAudioId = audioInfos.length > 0 ? 0 : null;
