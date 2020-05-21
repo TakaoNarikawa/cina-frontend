@@ -15,23 +15,17 @@ const skywayContext: SkywayContext = {
 
 type Context = {
   peerId: string | null;
-
   audioSourceList: MediaDeviceInfo[] | null;
-  videoSourceList: MediaDeviceInfo[] | null;
-
   audioSourceIdx: number | null;
-  videoSourceIdx: number | null;
   setAudioSourceIdx: (i: number | null) => void;
-  setVideoSourceIdx: (i: number | null) => void;
+  localStream: MediaStream | null;
 };
 const defaultContext = {
   peerId: null,
   audioSourceList: null,
-  videoSourceList: null,
   audioSourceIdx: null,
-  videoSourceIdx: null,
   setAudioSourceIdx: (i: number | null) => {},
-  setVideoSourceIdx: (i: number | null) => {},
+  localStream: null,
 };
 export const Context = React.createContext<Context>(defaultContext);
 
@@ -51,9 +45,9 @@ type ProviderProps = {
 const Provider: React.FC<ProviderProps> = ({ apiKey, onRecieveCall, onError, children }) => {
   const [peerId, setPeerId] = useState<string | null>(null);
   const [audioSourceIdx, setAudioSourceIdx] = useState<number | null>(null);
-  const [videoSourceIdx, setVideoSourceIdx] = useState<number | null>(null);
   const [audioSourceList, setAudioSourceList] = useState<MediaDeviceInfo[] | null>(null);
-  const [videoSourceList, setVideoSourceList] = useState<MediaDeviceInfo[] | null>(null);
+
+  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
 
   useEffect(() => {
     const peer = new Peer({ key: apiKey });
@@ -73,16 +67,11 @@ const Provider: React.FC<ProviderProps> = ({ apiKey, onRecieveCall, onError, chi
     }
     navigator.mediaDevices.enumerateDevices().then((deviceInfos) => {
       const audioInfos = deviceInfos.filter((d) => d.kind === "audioinput");
-      const videoInfos = deviceInfos.filter((d) => d.kind === "videoinput");
       setAudioSourceList(audioInfos);
-      setVideoSourceList(videoInfos);
       const defaultAudioId = audioInfos.length > 0 ? 0 : null;
-      const defaultVideoId = videoInfos.length > 0 ? 0 : null;
       setAudioSourceIdx(defaultAudioId);
-      setVideoSourceIdx(defaultVideoId);
-      setStream(
-        defaultAudioId ? audioInfos[defaultAudioId].deviceId : null,
-        defaultVideoId ? videoInfos[defaultVideoId].deviceId : null
+      setStream(defaultAudioId ? audioInfos[defaultAudioId].deviceId : null, null, (stream) =>
+        setLocalStream(stream)
       );
     });
   }, []);
@@ -91,11 +80,9 @@ const Provider: React.FC<ProviderProps> = ({ apiKey, onRecieveCall, onError, chi
       value={{
         peerId,
         audioSourceList,
-        videoSourceList,
         audioSourceIdx,
-        videoSourceIdx,
         setAudioSourceIdx,
-        setVideoSourceIdx,
+        localStream,
       }}
     >
       {children}

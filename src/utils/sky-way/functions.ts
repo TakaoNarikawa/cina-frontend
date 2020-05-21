@@ -5,14 +5,14 @@ import { setSkywayContext, getSkywayContext } from "./provider";
 export const setStream = (
   audioSource: string | null,
   videoSource: string | null,
-  onSetStreamCompletion?: () => void,
+  onSetStreamCompletion?: (stream: MediaStream) => void,
   onError?: (err: Error) => void
 ) => {
   const { existingCall } = getSkywayContext();
 
   const constraints = {
     audio: { deviceId: audioSource ? { exact: audioSource } : undefined },
-    video: { deviceId: videoSource ? { exact: videoSource } : undefined },
+    // video: { deviceId: videoSource ? { exact: videoSource } : undefined },
   };
 
   navigator.mediaDevices
@@ -25,10 +25,11 @@ export const setStream = (
         return;
       }
 
-      if (onSetStreamCompletion) onSetStreamCompletion();
+      if (onSetStreamCompletion) onSetStreamCompletion(stream);
     })
     .catch((err) => {
       if (onError) onError(err);
+      console.error(err);
     });
 };
 const takeCall = (

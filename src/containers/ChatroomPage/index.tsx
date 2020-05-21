@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback, useContext, useEffect, useRef } from "react";
 import SpaceSelectButton from "src/components/atoms/SpaceSelectButton";
 import styled from "styled-components";
 import Provider, { Context } from "src/utils/sky-way/provider";
@@ -10,28 +10,22 @@ const SpaceSelectWrapper = styled.div`
 `;
 
 const ChatroomPage: React.FC = () => {
-  const foo = useContext(Context);
-  console.log(foo);
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const { localStream } = useContext(Context);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.srcObject = localStream;
+    }
+  }, [localStream?.id]);
+
   return (
     <SpaceSelectWrapper>
       <SpaceSelectButton name="フロントチーム" joined />
       <SpaceSelectButton name="インフラチーム" />
       <SpaceSelectButton name="営業チーム" />
       <SpaceSelectButton name="休憩室" />
-
-      <button
-      // onClick={() => {
-      //   setStream(
-      //     (stream) => {
-      //       console.log(stream);
-      //     },
-      //     () => {},
-      //     () => {}
-      //   );
-      // }}
-      >
-        setStream
-      </button>
+      {/* <audio ref={audioRef} autoPlay /> */} {/* for debug */}
     </SpaceSelectWrapper>
   );
 };
