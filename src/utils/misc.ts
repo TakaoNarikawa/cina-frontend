@@ -2,7 +2,7 @@ export const parseOptionalInt = (
   i?: string,
   defaultValue: number = 0,
   from?: number,
-  to?: number,
+  to?: number
 ) => {
   const parsed = i ? parseInt(i) : null;
   return !(parsed && !isNaN(parsed))
@@ -16,8 +16,10 @@ export const parseOptionalInt = (
 
 export const convToUrlParams = (page: number, params: any) =>
   Object.entries({ ...params, page })
-    .map(e => `${e[0]}=${e[1]}`)
+    .map((e) => `${e[0]}=${e[1]}`)
     .join("&");
 
 export const limitedString = (s: string, limit: number): string =>
   s.length < limit ? s : s.substring(0, limit) + "...";
+
+export const API_HOSTNAME = "http://13.231.231.231";

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useRef, useEffect } from "react";
 import Peer, { MediaConnection, RoomStream } from "skyway-js";
-import { setSkywayContext, getSkywayContext } from "./provider";
+import { setSkywayGlobalVariable, getSkywayGlobalVariable } from "./provider";
 
 export const setStream = (
   audioSource: string | null,
@@ -8,7 +8,7 @@ export const setStream = (
   onSetStreamCompletion?: (stream: MediaStream) => void,
   onError?: (err: Error) => void
 ) => {
-  const { existingCall } = getSkywayContext();
+  const { existingCall } = getSkywayGlobalVariable();
 
   const constraints = {
     audio: { deviceId: audioSource ? { exact: audioSource } : undefined },
@@ -18,7 +18,7 @@ export const setStream = (
   navigator.mediaDevices
     .getUserMedia(constraints)
     .then((stream) => {
-      setSkywayContext({ localStream: stream });
+      setSkywayGlobalVariable({ localStream: stream });
 
       if (existingCall) {
         existingCall.replaceStream(stream);
@@ -49,21 +49,21 @@ export const makeCall = (
   onStream: (stream: MediaStream) => void,
   onClose: () => void
 ) => {
-  const { peer, localStream, existingCall } = getSkywayContext();
+  const { peer, localStream, existingCall } = getSkywayGlobalVariable();
   if (!peer || !localStream) return;
   const call = peer.call(id, localStream);
   takeCall(call, existingCall, onStream, onClose);
 };
 
 export const endCall = (onSetStreamCompletion: () => void) => {
-  const { existingCall } = getSkywayContext();
+  const { existingCall } = getSkywayGlobalVariable();
   existingCall?.close();
   onSetStreamCompletion();
 };
 
 export const joinRoom = (roomId: string) => {
   console.log("joinRoom");
-  const { peer, localStream } = getSkywayContext();
+  const { peer, localStream } = getSkywayGlobalVariable();
 
   if (!localStream) {
     return;
@@ -90,7 +90,7 @@ type Peers = {
   stream: RoomStream;
 };
 export const useRoomStream = (roomId: string) => {
-  const { peer, localStream } = getSkywayContext();
+  const { peer, localStream } = getSkywayGlobalVariable();
   const [streams, setStreams] = useState<RoomStream[]>([]);
 
   useEffect(() => {

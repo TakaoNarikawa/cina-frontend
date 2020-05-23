@@ -11,6 +11,7 @@
     "axios": "^0.19.2",
     "object-assign-deep": "^0.4.0",
     "react": "^16.13.0",
+    "react-common-component": "https://github.com/TakaoNarikawa/react-common-component.git",
     "react-dom": "^16.13.0",
     "react-icons": "^3.9.0",
     "react-player": "^1.15.3",
