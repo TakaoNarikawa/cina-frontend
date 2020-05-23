@@ -46,7 +46,6 @@ const Provider: React.FC<ProviderProps> = ({ apiKey, onRecieveCall, onError, chi
   const [peerId, setPeerId] = useState<string | null>(null);
   const [audioSourceIdx, setAudioSourceIdx] = useState<number | null>(null);
   const [audioSourceList, setAudioSourceList] = useState<MediaDeviceInfo[] | null>(null);
-
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
 
   useEffect(() => {
@@ -57,8 +56,8 @@ const Provider: React.FC<ProviderProps> = ({ apiKey, onRecieveCall, onError, chi
         console.log("sky-way peer opened");
         setPeerId(peer.id);
       });
-      peer.on("call", (call: MediaConnection) => {
-        onRecieveCall(call);
+      peer.on("call", (connection: MediaConnection) => {
+        onRecieveCall(connection);
       });
       peer.on("error", (err: Error) => {
         console.error(err);
