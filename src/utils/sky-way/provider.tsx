@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 import Peer, { MediaConnection } from "skyway-js";
 import { setStream } from "./functions";
 
-type SkywayContext = {
+type SkywayGlobalVariable = {
   peer: Peer | null;
   localStream: MediaStream | null;
   existingCall: MediaConnection | null;
 };
-const skywayContext: SkywayContext = {
+const skywayGlobalVariable: SkywayGlobalVariable = {
   peer: null,
   localStream: null,
   existingCall: null,
 };
 
-type Context = {
+type SkywayContext = {
   peerId: string | null;
   audioSourceList: MediaDeviceInfo[] | null;
   audioSourceIdx: number | null;
@@ -27,14 +27,18 @@ const defaultContext = {
   setAudioSourceIdx: (i: number | null) => {},
   localStream: null,
 };
-export const Context = React.createContext<Context>(defaultContext);
+export const SkywayContext = React.createContext<SkywayContext>(defaultContext);
 
-export const setSkywayContext = ({ peer, localStream, existingCall }: Partial<SkywayContext>) => {
-  if (peer) skywayContext.peer = peer;
-  if (localStream) skywayContext.localStream = localStream;
-  if (existingCall) skywayContext.existingCall = existingCall;
+export const setSkywayGlobalVariable = ({
+  peer,
+  localStream,
+  existingCall,
+}: Partial<SkywayGlobalVariable>) => {
+  if (peer) skywayGlobalVariable.peer = peer;
+  if (localStream) skywayGlobalVariable.localStream = localStream;
+  if (existingCall) skywayGlobalVariable.existingCall = existingCall;
 };
-export const getSkywayContext = () => skywayContext;
+export const getSkywayGlobalVariable = () => skywayGlobalVariable;
 
 type ProviderProps = {
   apiKey: string;
@@ -42,7 +46,7 @@ type ProviderProps = {
   onError?: (err: Error) => void;
 };
 
-const Provider: React.FC<ProviderProps> = ({ apiKey, onRecieveCall, onError, children }) => {
+const SkywayProvider: React.FC<ProviderProps> = ({ apiKey, onRecieveCall, onError, children }) => {
   const [peerId, setPeerId] = useState<string | null>(null);
   const [audioSourceIdx, setAudioSourceIdx] = useState<number | null>(null);
   const [audioSourceList, setAudioSourceList] = useState<MediaDeviceInfo[] | null>(null);
@@ -50,7 +54,7 @@ const Provider: React.FC<ProviderProps> = ({ apiKey, onRecieveCall, onError, chi
 
   useEffect(() => {
     const peer = new Peer({ key: apiKey });
-    setSkywayContext({ peer });
+    setSkywayGlobalVariable({ peer });
     if (peer) {
       peer.on("open", () => {
         console.log("sky-way peer opened");
@@ -75,7 +79,7 @@ const Provider: React.FC<ProviderProps> = ({ apiKey, onRecieveCall, onError, chi
     });
   }, []);
   return (
-    <Context.Provider
+    <SkywayContext.Provider
       value={{
         peerId,
         audioSourceList,
@@ -85,8 +89,8 @@ const Provider: React.FC<ProviderProps> = ({ apiKey, onRecieveCall, onError, chi
       }}
     >
       {children}
-    </Context.Provider>
+    </SkywayContext.Provider>
   );
 };
 
-export default Provider;
+export default SkywayProvider;
