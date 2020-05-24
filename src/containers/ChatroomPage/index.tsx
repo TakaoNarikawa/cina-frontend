@@ -9,6 +9,7 @@ import { HUGE } from "src/utils/space";
 import { CinaContext } from "src/utils/provider";
 import useSetPosition from "src/hooks/useSetPosition";
 import { Alert } from "antd";
+import { RoomStream } from "skyway-js";
 
 const ContentContainer = styled.div`
   display: flex;
@@ -49,22 +50,6 @@ const ChatroomPage: React.FC = () => {
     }
   );
 
-  // const selfPositionIdx = Object.entries(userInfo).find(([k, v]) => v.self)?.[0];
-  // const selfPosition = selfPositionIdx ? TABLE_COOR[selfPositionIdx] : null;
-  // const distances = Object.entries(userInfo)
-  //   .filter(([k, v]) => !v.self)
-  //   .map(([k, v]) => ({
-  //     username: v.username,
-  //     distance: selfPosition ? distance(selfPosition, TABLE_COOR[k]) : null,
-  //   }));
-
-  // console.log("distances", distances);
-  // const selectedStreams = distances.map((d) => ({
-  //   username: d.username,
-  //   distance: d.distance,
-  //   stream: streams.find((s) => s.peerId == d.username),
-  // }));
-
   const hanleClickSelect = (n: number) => {
     setPosition(n);
   };
@@ -73,7 +58,10 @@ const ChatroomPage: React.FC = () => {
     <>
       <ContentContainer>
         {userInfo ? (
-          <StyledChatroomTable userInfo={userInfo} onClick={hanleClickSelect} />
+          <>
+            <StyledChatroomTable userInfo={userInfo} onClick={hanleClickSelect} />
+            <StreamPlayerManager streams={streams} userInfo={userInfo} />
+          </>
         ) : (
           <>読み込み中</>
         )}
@@ -87,8 +75,33 @@ const ChatroomPage: React.FC = () => {
           onClose={() => setShowAlert(false)}
         />
       )}
-      {streams.map((stream) => (
-        <StreamPlayer stream={stream} />
+    </>
+  );
+};
+
+const StreamPlayerManager: React.FC<{ streams: RoomStream[]; userInfo: UserInfo[] }> = ({
+  streams,
+  userInfo,
+}) => {
+  const selfPositionIdx = Object.entries(userInfo).find(([k, v]) => v.self)?.[0];
+  const selfPosition = selfPositionIdx ? TABLE_COOR[selfPositionIdx] : null;
+  const distances = Object.entries(userInfo)
+    .filter(([k, v]) => !v.self)
+    .map(([k, v]) => ({
+      username: v.username,
+      distance: selfPosition ? distance(selfPosition, TABLE_COOR[k]) : null,
+    }));
+
+  const selectedStreams = distances.map((d) => ({
+    username: d.username,
+    distance: d.distance,
+    stream: streams.find((s) => s.peerId == d.username)!,
+  }));
+
+  return (
+    <>
+      {streams.map((s) => (
+        <StreamPlayer stream={s} />
       ))}
     </>
   );

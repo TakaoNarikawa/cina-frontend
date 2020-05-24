@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { UserInfo } from "src/hooks/useUsersInfo";
+import { Avatar } from "antd";
 
 const TABLE_LAYOUT: (number | null)[][] = [
   [0, 1, 2, null, 3, 4],
@@ -36,14 +37,25 @@ export const TABLE_COOR: { [p: string]: [number, number] } = {
   22: [4, 5],
   23: [5, 5],
 };
+const imgObj: { [name: string]: string } = {};
+
+const getImgUrl = (name: string): string => {
+  const img = imgObj[name];
+  if (img) return img;
+  const imgId = Math.floor(Math.random() * 100) + 1;
+  const newImg = `https://randomuser.me/api/portraits/med/men/${imgId}.jpg`;
+  imgObj[name] = newImg;
+  return newImg;
+};
 
 type Props = {
   userInfo: UserInfo[];
   onClick: (i: number) => void;
 };
 
-type TableElementProps = { exists?: boolean; self?: boolean };
+type TableElementProps = { available?: boolean; self?: boolean };
 
+const SelfAvatar = styled(Avatar)``;
 const Table = styled.table`
   min-width: 350px;
 `;
@@ -52,19 +64,21 @@ const COMMON_STYLE = `
   widTh: 100px;
   height: 100px;
 `;
-const EXIST_STYLE = `
+const AVAILABLE_STYLE = `
   border: 2px solid #f0f0f0;
+  background-color: #fafafa;
 `;
 const SELF_STYLE = `
-  background-color: blue;
+  background-color: #e9f7fe;
+  border-top: 3px solid #1890ff;
 `;
 const Th = styled.th<TableElementProps>`
-  ${(props) => (props.exists ? EXIST_STYLE : "")}
+  ${(props) => (props.available ? AVAILABLE_STYLE : "")}
   ${(props) => (props.self ? SELF_STYLE : "")}
   ${COMMON_STYLE}
 `;
 const Td = styled.td<TableElementProps>`
-  ${(props) => (props.exists ? EXIST_STYLE : "")}
+  ${(props) => (props.available ? AVAILABLE_STYLE : "")}
   ${(props) => (props.self ? SELF_STYLE : "")}
   ${COMMON_STYLE}
 `;
@@ -82,13 +96,18 @@ const ChatroomTable: React.FC<Props> = ({ userInfo, onClick }) => {
                 const user = e != null ? userInfoObj[e] : null;
                 return (
                   <Ele
-                    exists={e != null}
+                    available={e != null}
                     self={user?.self}
                     onClick={() => {
                       if (e) onClick(e);
                     }}
                   >
-                    {user?.username}
+                    {user &&
+                      (user.self ? (
+                        <SelfAvatar size={64} icon={<img src={getImgUrl(user.username)} />} />
+                      ) : (
+                        <Avatar size={64} icon={<img src={getImgUrl(user.username)} />} />
+                      ))}
                   </Ele>
                 );
               })}
