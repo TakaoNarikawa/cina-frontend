@@ -65,11 +65,8 @@ const formItemLayout = {
 
 const SignUpPage: React.FC = () => {
   const [handleSignup] = useRegistration(
+    () => {},
     () => {
-      console.log("success");
-    },
-    () => {
-      console.log("failures");
       setShowAlert(true);
     }
   );

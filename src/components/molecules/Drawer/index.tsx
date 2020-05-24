@@ -16,19 +16,6 @@ type Props = {
   visible: boolean;
 };
 
-const AccountInfo = (
-  <>
-    <Row>
-      <Col span={8}>
-        <Avatar size={64} icon={<UserOutlined />} />
-      </Col>
-      <Col span={16}>
-        <Typography style={{ height: "64px", lineHeight: "64px" }}>めいだいたろう</Typography>
-      </Col>
-    </Row>
-  </>
-);
-
 const CustomDrawer: React.FC<Props> = (props) => {
   const history = useHistory();
   const [execLogout] = useLogout(
@@ -46,13 +33,7 @@ const CustomDrawer: React.FC<Props> = (props) => {
     execLogout();
   }, []);
   return (
-    <Drawer
-      title={AccountInfo}
-      placement="right"
-      closable={false}
-      onClose={props.onClose}
-      visible={props.visible}
-    >
+    <Drawer placement="right" closable={false} onClose={props.onClose} visible={props.visible}>
       <Menu style={{ borderRight: "0px" }}>
         <Menu.Item>
           <Button type="link" onClick={handleBackToTop} style={{ width: "100%", height: "100%" }}>

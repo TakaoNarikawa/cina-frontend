@@ -3,6 +3,7 @@ import SpaceSelectButton from "src/components/atoms/SpaceSelectButton";
 import { StreamPlayer, useRoomStream } from "src/utils/sky-way/functions";
 import Provider from "src/utils/sky-way/provider";
 import styled from "styled-components";
+import ChatroomTable, { TABLE_COOR, UserInfo } from "src/components/atoms/ChatroomTable";
 
 const ContentContainer = styled.div`
   position: relative;
@@ -20,47 +21,45 @@ type SpaceList = {
   [id: string]: Space;
 };
 
-const defaultRooms: SpaceList = {
-  frontend: {
-    name: "フロントチーム",
-    enabled: false,
-  },
-  infra: {
-    name: "インフラチーム",
-    enabled: false,
-  },
-  cs: {
-    name: "営業チーム",
-    enabled: false,
-  },
-  rest: {
-    name: "休憩室",
-    enabled: false,
-  },
+type UserPosition = { [p: number]: UserInfo };
+type Position = [number, number];
+const distance = (x: Position, y: Position) =>
+  Math.sqrt(Math.pow(x[0] - y[0], 2) + Math.pow(x[1] - y[1], 2));
+
+const TEST_USER_INFO: UserPosition = {
+  2: { username: "Adam", self: true },
+  5: { username: "Eve" },
+  3: { username: "Bob" },
 };
 
 const ChatroomPage: React.FC = () => {
-  const [rooms, setRooms] = useState<SpaceList>(defaultRooms);
   const streams = useRoomStream("foooooo");
+  const [userPosition, setUserPosition] = useState<UserPosition>(TEST_USER_INFO);
 
-  const hanleClickSelect = (id: string) => {
-    const room = rooms[id];
-    setRooms({
-      ...rooms,
-      [id]: {
-        ...room,
-        enabled: !room.enabled,
-      },
-    });
+  const selfPositionIdx = Object.entries(userPosition).find(([k, v]) => v.self)?.[0];
+  const selfPosition = selfPositionIdx ? TABLE_COOR[selfPositionIdx] : null;
+
+  const distances = Object.entries(userPosition)
+    .filter(([k, v]) => !v.self)
+    .map(([k, v]) => ({
+      username: v.username,
+      distance: selfPosition ? distance(selfPosition, TABLE_COOR[k]) : null,
+    }));
+
+  console.log("distances", distances);
+  const selectedStreams = distances.map((d) => ({
+    username: d.username,
+    distance: d.distance,
+    stream: streams.find((s) => s.peerId == d.username),
+  }));
+
+  const hanleClickSelect = (n: number) => {
+    console.log(n);
   };
   return (
     <>
       <ContentContainer>
-        <SpaceSelectWrapper>
-          {Object.entries(rooms).map(([id, { name, enabled }]) => (
-            <SpaceSelectButton name={name} joined={enabled} onClick={() => hanleClickSelect(id)} />
-          ))}
-        </SpaceSelectWrapper>
+        <ChatroomTable userPosition={userPosition} onClick={hanleClickSelect} />
       </ContentContainer>
       {streams.map((stream) => (
         <StreamPlayer stream={stream} />

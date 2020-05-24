@@ -94,7 +94,6 @@ export const useRoomStream = (roomId: string) => {
   const [streams, setStreams] = useState<RoomStream[]>([]);
 
   useEffect(() => {
-    console.log();
     if (!(localStream && peer?.open)) {
       return;
     }

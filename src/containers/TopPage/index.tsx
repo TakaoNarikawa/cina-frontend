@@ -8,7 +8,7 @@ const TopPage: React.FC = () => {
     history.push("/login");
   }, []);
   const onClickRegister = useCallback(() => {
-    history.push("/signup/test");
+    history.push("/signup");
   }, []);
   return (
     <>

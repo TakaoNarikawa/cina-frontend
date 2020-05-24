@@ -6,6 +6,7 @@ import { BASE, X_LARGE } from "src/utils/space";
 import styled from "styled-components";
 import useLogin from "src/hooks/useLogin";
 import "./style.css";
+import { Alert } from "antd";
 import useUsersInfo from "src/hooks/useUsersInfo";
 
 const { Title, Text } = Typography;
@@ -68,6 +69,20 @@ const SubmitButton = styled(Button)`
   margin-top: ${BASE};
 `;
 
+const AlertWrapper = styled.div`
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: stretch;
+  align-items: stretch;
+
+  padding-top: ${BASE};
+`;
+const StyledAlert = styled(Alert)`
+  width: 60%;
+`;
+
 type BaseProps = {
   title: string;
   description: string;
@@ -87,6 +102,7 @@ const Base: React.FC<BaseProps> = ({ children, title, description }) => (
 
 export const LoginPage: React.FC = () => {
   const history = useHistory();
+  const [showAlert, setShowAlert] = useState(false);
   const [handleLogin] = useLogin(
     () => {
       console.log("success");
@@ -94,6 +110,7 @@ export const LoginPage: React.FC = () => {
     },
     () => {
       console.log("failure");
+      setShowAlert(true);
     }
   );
   const onFinish = useCallback((values: any) => {
@@ -160,9 +177,22 @@ export const LoginPage: React.FC = () => {
         </Form>
       </Base>
       <BottomMessage>
-        <Title level={4}>まだワークスペースでアカウントを持っていませんか？</Title>
-        <Text>ワークスペースの管理者に連絡して、招待してもらいましょう。</Text>
+        <Title level={4}>まだアカウントを持っていませんか？</Title>
+        <Text>
+          新しくユーザー登録しましょう。<Link to="/signup">新規登録</Link>
+        </Text>
       </BottomMessage>
+
+      {showAlert && (
+        <AlertWrapper>
+          <StyledAlert
+            message="ユーザー名とパスワードの組み合わせが正しくありません。"
+            type="error"
+            onClose={() => setShowAlert(false)}
+            closable
+          />
+        </AlertWrapper>
+      )}
     </>
   );
 };

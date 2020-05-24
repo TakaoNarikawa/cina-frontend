@@ -53,7 +53,8 @@ const SkywayProvider: React.FC<ProviderProps> = ({ apiKey, onRecieveCall, onErro
   const [localStream, setLocalStream] = useState<MediaStream | null>(null);
 
   useEffect(() => {
-    const peer = new Peer({ key: apiKey });
+    const id = "";
+    const peer = new Peer(id, { key: apiKey });
     setSkywayGlobalVariable({ peer });
     if (peer) {
       peer.on("open", () => {

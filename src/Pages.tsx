@@ -17,7 +17,7 @@ const pages: Page[] = [
     noPadding: true,
   },
   {
-    path: "/signup/:workspaceId",
+    path: "/signup",
     View: SignUpPage,
   },
   {
