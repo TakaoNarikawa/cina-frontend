@@ -1,13 +1,14 @@
 import { Layout, Menu, Typography } from "antd";
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { IoIosMenu } from "react-icons/io";
 import { BrowserRouter as Router, Link, Route, Switch, useLocation } from "react-router-dom";
 import Drawer from "src/components/molecules/Drawer";
 import pages from "src/Pages";
 import { HEADER_BACKGROUND_COLOR, SITE_BACKGROUND_COLOR } from "src/utils/color";
 import styled from "styled-components";
-import { BASE, PAGE_SIDE_PADDING, X_LARGE, HEADER_HEIGHT, FOOTER_HEIGHT } from "./utils/space";
 import { CinaContext } from "./utils/provider";
+import { BASE, FOOTER_HEIGHT, HEADER_HEIGHT, PAGE_SIDE_PADDING, X_LARGE } from "./utils/space";
+import Logo from "src/resource/Logo.png";
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
@@ -53,8 +54,7 @@ const ButtonWrapper = styled.button`
   outline: none;
 `;
 
-const Logo = styled.div`
-  width: 120px;
+const LogoImg = styled.img`
   height: 31px;
   margin: 16px 24px 16px 0;
   float: left;
@@ -99,13 +99,9 @@ const App: React.FC = () => {
     <Router>
       <StyledLayout>
         <StyledHeader>
-          <Logo>
-            <Link to="/">
-              <Title level={2} style={{ color: "white" }}>
-                cina
-              </Title>
-            </Link>
-          </Logo>
+          <Link to="/">
+            <LogoImg src={Logo} />
+          </Link>
 
           <Menu
             theme="dark"

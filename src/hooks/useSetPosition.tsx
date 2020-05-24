@@ -3,7 +3,7 @@ import { CinaContext } from "src/utils/provider";
 import axios from "axios";
 import { API_HOSTNAME } from "src/utils/misc";
 
-const URL = API_HOSTNAME + "/api/v1/rest-auth/login/";
+const URL = API_HOSTNAME + "/api/v1/user_info/workspacetable/set_user_location/";
 
 console.log(URL, "URL");
 
@@ -13,20 +13,23 @@ type User = {
   email: string;
 };
 
-const useChangePosition = (
+const useSetPosition = (
   onSuccess: () => void,
   onFailure: () => void
-): [(n: string, p: string) => void, boolean] => {
-  const { setToken } = useContext(CinaContext);
+): ((location: number) => void) => {
+  const { email, token } = useContext(CinaContext);
   const [waiting, setWaiting] = useState<boolean>(false);
-  const changePosition = useCallback((username: string, password: string) => {
+  const setPosition = useCallback((location: number) => {
     const params = {
-      username,
-      password,
+      workspace: "space1",
+      email,
+      user_location: location,
     };
     axios
       .post(URL, params, {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          Authorization: `Token ${token}`,
+        },
       })
       .then((results) => {
         onSuccess();
@@ -37,7 +40,7 @@ const useChangePosition = (
       .finally(() => setWaiting(false));
   }, []);
 
-  return [changePosition, waiting];
+  return setPosition;
 };
 
-export default useChangePosition;
+export default useSetPosition;

@@ -18,7 +18,7 @@ const useLogin = (
   onFailure: () => void
 ): [(n: string, p: string) => void, boolean] => {
   const [waiting, setWaiting] = useState<boolean>(false);
-  const { setToken } = useContext(CinaContext);
+  const { setToken, setEmail } = useContext(CinaContext);
   const handleLogin = useCallback((username: string, password: string) => {
     const params = {
       username,
@@ -31,7 +31,7 @@ const useLogin = (
       .then((results) => {
         const token = results.data.key;
         setToken(token);
-        console.log(token);
+        setEmail(username);
         onSuccess();
       })
       .catch((err) => {

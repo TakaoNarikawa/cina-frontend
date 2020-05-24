@@ -12,13 +12,13 @@ const useRegistration = (
   const [waiting, setWaiting] = useState<boolean>(false);
   const handleRegister = useCallback((username: string, email: string, password: string) => {
     const params = {
-      username: "asdfasdfasdfs",
-      email: "fargaga@barasdfa.com",
-      password1: "iahrgaiherghaorihgvod921412",
-      password2: "iahrgaiherghaorihgvod921412",
+      username,
+      email,
+      password1: password,
+      password2: password,
     };
     axios
-      .post("http://13.231.231.231/api/v1/rest-auth/registration/", params, {
+      .post(URL, params, {
         headers: { "Content-Type": "application/json" },
       })
       .then((results) => {

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { UserInfo } from "src/hooks/useUsersInfo";
 
 const TABLE_LAYOUT: (number | null)[][] = [
   [0, 1, 2, null, 3, 4],
@@ -36,14 +37,8 @@ export const TABLE_COOR: { [p: string]: [number, number] } = {
   23: [5, 5],
 };
 
-export type UserInfo = {
-  username: string;
-  self?: boolean;
-};
 type Props = {
-  userPosition: {
-    [pos: number]: UserInfo;
-  };
+  userInfo: UserInfo[];
   onClick: (i: number) => void;
 };
 
@@ -58,7 +53,7 @@ const COMMON_STYLE = `
   height: 100px;
 `;
 const EXIST_STYLE = `
-  background-color: red;
+  border: 2px solid #f0f0f0;
 `;
 const SELF_STYLE = `
   background-color: blue;
@@ -74,31 +69,34 @@ const Td = styled.td<TableElementProps>`
   ${COMMON_STYLE}
 `;
 
-const ChatroomTable: React.FC<Props> = ({ userPosition, onClick }) => (
-  <>
-    <Table>
-      {TABLE_LAYOUT.map((row, i) => {
-        const Ele = i > 0 ? Td : Th;
-        return (
-          <tr>
-            {row.map((e, j) => {
-              const user = e != null ? userPosition[e] : null;
-              return (
-                <Ele
-                  exists={e != null}
-                  self={user?.self}
-                  onClick={() => {
-                    if (e) onClick(e);
-                  }}
-                >
-                  {user?.username}
-                </Ele>
-              );
-            })}
-          </tr>
-        );
-      })}
-    </Table>
-  </>
-);
+const ChatroomTable: React.FC<Props> = ({ userInfo, onClick }) => {
+  const userInfoObj = Object.fromEntries(userInfo.map((p) => [p.position, p]));
+  return (
+    <>
+      <Table>
+        {TABLE_LAYOUT.map((row, i) => {
+          const Ele = i > 0 ? Td : Th;
+          return (
+            <tr>
+              {row.map((e, j) => {
+                const user = e != null ? userInfoObj[e] : null;
+                return (
+                  <Ele
+                    exists={e != null}
+                    self={user?.self}
+                    onClick={() => {
+                      if (e) onClick(e);
+                    }}
+                  >
+                    {user?.username}
+                  </Ele>
+                );
+              })}
+            </tr>
+          );
+        })}
+      </Table>
+    </>
+  );
+};
 export default ChatroomTable;
