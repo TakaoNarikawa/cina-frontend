@@ -1,5 +1,5 @@
 import { Layout, Menu, Typography } from "antd";
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import { IoIosMenu } from "react-icons/io";
 import { BrowserRouter as Router, Link, Route, Switch, useLocation } from "react-router-dom";
 import Drawer from "src/components/molecules/Drawer";
@@ -7,6 +7,7 @@ import pages from "src/Pages";
 import { HEADER_BACKGROUND_COLOR, SITE_BACKGROUND_COLOR } from "src/utils/color";
 import styled from "styled-components";
 import { BASE, PAGE_SIDE_PADDING, X_LARGE, HEADER_HEIGHT, FOOTER_HEIGHT } from "./utils/space";
+import { CinaContext } from "./utils/provider";
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
@@ -68,7 +69,11 @@ const HamburgerIcon = styled(IoIosMenu)`
 
 const Routes: React.FC = () => {
   const { pathname } = useLocation();
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  const { token } = useContext(CinaContext);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    console.log("token", token);
+  }, [pathname]);
   return (
     <Switch>
       {pages.map(({ path, noPadding, View }, i) => (

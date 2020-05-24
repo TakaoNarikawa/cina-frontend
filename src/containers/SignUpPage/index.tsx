@@ -5,6 +5,8 @@ import PrivacyPolicy from "src/components/molecules/PrivacyPolicy";
 import { Link, useParams } from "react-router-dom";
 import { BASE } from "src/utils/space";
 import styled from "styled-components";
+import { Alert } from "antd";
+import useRegistration from "src/hooks/useRegistration";
 
 const { Title, Text } = Typography;
 
@@ -36,6 +38,19 @@ const SubmitButtonWrapper = styled.div`
 
   padding-top: ${BASE};
 `;
+const AlertWrapper = styled.div`
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-align-items: stretch;
+  align-items: stretch;
+
+  padding-top: ${BASE};
+`;
+const StyledAlert = styled(Alert)`
+  width: 60%;
+`;
 
 const formItemLayout = {
   labelCol: {
@@ -49,14 +64,19 @@ const formItemLayout = {
 };
 
 const SignUpPage: React.FC = () => {
-  const params = useParams<{ workspaceId: string }>();
-
-  // 直接 workspaceIdで管理すると、自由にアカウントが作れてしまうため要変更
-  const { workspaceId } = params;
-  console.log("workspaceId", workspaceId);
+  const [handleSignup] = useRegistration(
+    () => {
+      console.log("success");
+    },
+    () => {
+      console.log("failures");
+      setShowAlert(true);
+    }
+  );
 
   const [policyAccept, setPolicyAccept] = useState(false);
   const [showPolicy, setShowPolicy] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   const toggleShowPolicy = useCallback(() => setShowPolicy((prev) => !prev), []);
   const onModalOk = useCallback(() => {
@@ -69,13 +89,14 @@ const SignUpPage: React.FC = () => {
   }, []);
 
   const onFinish = useCallback((values: any) => {
-    console.log("Received values of form: ", values);
+    const { name, email, password } = values;
+    handleSignup(name, email, password);
   }, []);
 
   return (
     <>
       <TitleWrapper>
-        <Title level={2}>ワークスペース {workspaceId} のユーザー登録</Title>
+        <Title level={2}>ユーザー新規登録</Title>
       </TitleWrapper>
 
       <Form onFinish={onFinish} {...formItemLayout}>
@@ -104,6 +125,17 @@ const SignUpPage: React.FC = () => {
             送信
           </Button>
         </SubmitButtonWrapper>
+
+        {showAlert && (
+          <AlertWrapper>
+            <StyledAlert
+              message="ユーザー名もしくはメールアドレスが使用されています。"
+              type="error"
+              onClose={() => setShowAlert(false)}
+              closable
+            />
+          </AlertWrapper>
+        )}
       </Form>
     </>
   );

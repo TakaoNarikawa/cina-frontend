@@ -3,35 +3,26 @@ import { CinaContext } from "src/utils/provider";
 import axios from "axios";
 import { API_HOSTNAME } from "src/utils/misc";
 
-const URL = API_HOSTNAME + "/api/v1/rest-auth/login/";
+const URL = API_HOSTNAME + "/api/v1/rest-auth/registration/";
 
-console.log(URL, "URL");
-
-type User = {
-  uuid: string;
-  username: string;
-  email: string;
-};
-
-const useLogin = (
+const useRegistration = (
   onSuccess: () => void,
   onFailure: () => void
-): [(n: string, p: string) => void, boolean] => {
+): [(n: string, e: string, p: string) => void, boolean] => {
   const [waiting, setWaiting] = useState<boolean>(false);
-  const { setToken } = useContext(CinaContext);
-  const handleLogin = useCallback((username: string, password: string) => {
+  const handleRegister = useCallback((username: string, email: string, password: string) => {
     const params = {
-      username,
-      password,
+      username: "asdfasdfasdfs",
+      email: "fargaga@barasdfa.com",
+      password1: "iahrgaiherghaorihgvod921412",
+      password2: "iahrgaiherghaorihgvod921412",
     };
     axios
-      .post(URL, params, {
+      .post("http://13.231.231.231/api/v1/rest-auth/registration/", params, {
         headers: { "Content-Type": "application/json" },
       })
       .then((results) => {
         const token = results.data.key;
-        setToken(token);
-        console.log(token);
         onSuccess();
       })
       .catch((err) => {
@@ -40,7 +31,7 @@ const useLogin = (
       .finally(() => setWaiting(false));
   }, []);
 
-  return [handleLogin, waiting];
+  return [handleRegister, waiting];
 };
 
-export default useLogin;
+export default useRegistration;

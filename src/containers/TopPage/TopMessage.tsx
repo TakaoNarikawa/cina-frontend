@@ -52,7 +52,7 @@ const TopMessage: React.FC<Props> = ({ onClickRegister, onClickLogin }) => {
 
           <ButtonWrapper>
             <StyledButton type="primary" shape="round" size="large" onClick={onClickRegister}>
-              ワークスペースを新規作成
+              ユーザー新規登録
             </StyledButton>
             <StyledButton type="primary" shape="round" size="large" onClick={onClickLogin}>
               ログイン

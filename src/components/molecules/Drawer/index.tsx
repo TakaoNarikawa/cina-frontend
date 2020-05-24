@@ -3,6 +3,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Col, Drawer, Menu, Row, Typography } from "antd";
 import React, { useCallback } from "react";
 import { useHistory } from "react-router-dom";
+import useLogout from "src/hooks/useLogout";
 
 type PushCloseButtonProps = {
   history: ReturnType<typeof useHistory>;
@@ -28,20 +29,22 @@ const AccountInfo = (
   </>
 );
 
-const PushCloseButton: React.FC<PushCloseButtonProps> = ({ children, history, onClose, to }) => {
-  const handleClose = useCallback(() => {
-    history.push(to);
-    onClose();
-  }, []);
-  return (
-    <Button type="link" onClick={handleClose} style={{ width: "100%", height: "100%" }}>
-      {children}
-    </Button>
-  );
-};
-
 const CustomDrawer: React.FC<Props> = (props) => {
   const history = useHistory();
+  const [execLogout] = useLogout(
+    () => {
+      history.push("/");
+      props.onClose();
+    },
+    () => {}
+  );
+  const handleBackToTop = useCallback(() => {
+    history.push("/");
+    props.onClose();
+  }, []);
+  const handleLogout = useCallback(() => {
+    execLogout();
+  }, []);
   return (
     <Drawer
       title={AccountInfo}
@@ -52,24 +55,14 @@ const CustomDrawer: React.FC<Props> = (props) => {
     >
       <Menu style={{ borderRight: "0px" }}>
         <Menu.Item>
-          <PushCloseButton history={history} onClose={props.onClose} to="/booked-jobpost">
-            <Typography>設定</Typography>
-          </PushCloseButton>
+          <Button type="link" onClick={handleBackToTop} style={{ width: "100%", height: "100%" }}>
+            TOPへ戻る
+          </Button>
         </Menu.Item>
         <Menu.Item>
-          <PushCloseButton history={history} onClose={props.onClose} to="/edit_profile">
-            <Typography>プロフィール編集</Typography>
-          </PushCloseButton>
-        </Menu.Item>
-        <Menu.Item>
-          <PushCloseButton history={history} onClose={props.onClose} to="/">
-            <Typography>TOPへ戻る</Typography>
-          </PushCloseButton>
-        </Menu.Item>
-        <Menu.Item>
-          <PushCloseButton history={history} onClose={props.onClose} to="/">
-            <Typography style={{ color: blue[5] }}>ログアウト</Typography>
-          </PushCloseButton>
+          <Button type="link" onClick={handleLogout} style={{ width: "100%", height: "100%" }}>
+            ログアウト
+          </Button>
         </Menu.Item>
       </Menu>
     </Drawer>

@@ -1,11 +1,12 @@
-import { Button, Card, Form, Input, Checkbox, Typography } from "antd";
-import React, { useState, useEffect, useCallback } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Card, Checkbox, Form, Input, Typography } from "antd";
+import React, { useCallback, useEffect, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import { BASE, X_LARGE } from "src/utils/space";
 import styled from "styled-components";
-import { BrowserRouter as Router, Link, Route, Switch, useLocation } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import useLogin from "src/hooks/useLogin";
 import "./style.css";
+import useUsersInfo from "src/hooks/useUsersInfo";
 
 const { Title, Text } = Typography;
 
@@ -84,50 +85,20 @@ const Base: React.FC<BaseProps> = ({ children, title, description }) => (
   </Container>
 );
 
-const LoginPage: React.FC = () => {
+export const LoginPage: React.FC = () => {
   const history = useHistory();
-  const [workspaceId, setWorkspaceId] = useState<string | null>(null);
-  const onFinish = useCallback((values: any) => {
-    // サーバーにアクセスして、存在しているかをチェックするべき
-    setWorkspaceId(values.url);
-  }, []);
-
-  useEffect(() => {
-    if (workspaceId) history.push(`/login/${workspaceId}`);
-  }, [workspaceId]);
-
-  return (
-    <Base
-      title="ワ⁠ー⁠ク⁠ス⁠ペ⁠ー⁠ス⁠に​ログインす⁠る"
-      description="参加する企業のワークスペースURLを入力してください"
-    >
-      <Form
-        name="normal_login"
-        className="login-form"
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-      >
-        <InputWrapper>
-          <Form.Item
-            name="url"
-            rules={[{ required: true, message: "ワークスペースURLを入力してください" }]}
-          >
-            <WorkspaceInput align="right" placeholder="ワークスペースURL" size="large" />
-          </Form.Item>
-          <UrlSuffixText>.cina.com</UrlSuffixText>
-        </InputWrapper>
-
-        <SubmitButton type="primary" htmlType="submit" size="large" block>
-          続行する →
-        </SubmitButton>
-      </Form>
-    </Base>
+  const [handleLogin] = useLogin(
+    () => {
+      console.log("success");
+      history.push("/chatroom");
+    },
+    () => {
+      console.log("failure");
+    }
   );
-};
-
-export const LoginWorkspacePage: React.FC = () => {
   const onFinish = useCallback((values: any) => {
-    console.log("values", values);
+    const { username, password } = values;
+    handleLogin(username, password);
   }, []);
   return (
     <>
@@ -196,6 +167,47 @@ export const LoginWorkspacePage: React.FC = () => {
   );
 };
 
+export const LoginWorkspacePage: React.FC = () => {
+  const history = useHistory();
+  const [workspaceId, setWorkspaceId] = useState<string | null>(null);
+  const onFinish = useCallback((values: any) => {
+    // サーバーにアクセスして、存在しているかをチェックするべき
+    setWorkspaceId(values.url);
+  }, []);
+
+  useEffect(() => {
+    if (workspaceId) history.push(`/login/${workspaceId}`);
+  }, [workspaceId]);
+
+  return (
+    <Base
+      title="ワ⁠ー⁠ク⁠ス⁠ペ⁠ー⁠ス⁠に​ログインす⁠る"
+      description="参加する企業のワークスペースURLを入力してください"
+    >
+      <Form
+        name="normal_login"
+        className="login-form"
+        initialValues={{ remember: true }}
+        onFinish={onFinish}
+      >
+        <InputWrapper>
+          <Form.Item
+            name="url"
+            rules={[{ required: true, message: "ワークスペースURLを入力してください" }]}
+          >
+            <WorkspaceInput align="right" placeholder="ワークスペースURL" size="large" />
+          </Form.Item>
+          <UrlSuffixText>.cina.com</UrlSuffixText>
+        </InputWrapper>
+
+        <SubmitButton type="primary" htmlType="submit" size="large" block>
+          続行する →
+        </SubmitButton>
+      </Form>
+    </Base>
+  );
+};
+
 export const ResetPasswordPage: React.FC = () => {
   const onFinish = useCallback((values: any) => {
     console.log("Received values of form: ", values);
@@ -226,5 +238,3 @@ export const ResetPasswordPage: React.FC = () => {
     </Base>
   );
 };
-
-export default LoginPage;

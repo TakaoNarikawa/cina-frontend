@@ -1,6 +1,6 @@
 import React from "react";
 import TopPage from "src/containers/TopPage";
-import LoginPage, { LoginWorkspacePage, ResetPasswordPage } from "src/containers/LoginPage";
+import { LoginPage, LoginWorkspacePage, ResetPasswordPage } from "src/containers/LoginPage";
 import SignUpPage from "src/containers/SignUpPage";
 import ChatroomPage from "src/containers/ChatroomPage";
 

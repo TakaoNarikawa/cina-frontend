@@ -2,12 +2,12 @@ import React, { useState } from "react";
 
 type CinaContext = {
   token: string | null;
-  setToken: (t: string) => void;
+  setToken: (t: string | null) => void;
 };
 
 const defaultContext = {
   token: null,
-  setToken: (t: string) => {
+  setToken: (t: string | null) => {
     /* do nothing */
   },
 };
