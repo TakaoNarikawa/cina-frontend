@@ -42,7 +42,7 @@ const imgObj: { [name: string]: string } = {};
 const getImgUrl = (name: string): string => {
   const img = imgObj[name];
   if (img) return img;
-  const imgId = Math.floor(Math.random() * 100) + 1;
+  const imgId = Math.floor(Math.random() * 75) + 1;
   const newImg = `https://randomuser.me/api/portraits/med/men/${imgId}.jpg`;
   imgObj[name] = newImg;
   return newImg;
@@ -55,7 +55,9 @@ type Props = {
 
 type TableElementProps = { available?: boolean; self?: boolean };
 
-const SelfAvatar = styled(Avatar)``;
+const StyledAvatar = styled(Avatar)`
+  border: 2px solid #c0c0c0;
+`;
 const Table = styled.table`
   min-width: 350px;
 `;
@@ -65,7 +67,7 @@ const COMMON_STYLE = `
   height: 100px;
 `;
 const AVAILABLE_STYLE = `
-  border: 2px solid #f0f0f0;
+  border: 1px solid #c0c0c0;
   background-color: #fafafa;
 `;
 const SELF_STYLE = `
@@ -102,12 +104,9 @@ const ChatroomTable: React.FC<Props> = ({ userInfo, onClick }) => {
                       if (e) onClick(e);
                     }}
                   >
-                    {user &&
-                      (user.self ? (
-                        <SelfAvatar size={64} icon={<img src={getImgUrl(user.username)} />} />
-                      ) : (
-                        <Avatar size={64} icon={<img src={getImgUrl(user.username)} />} />
-                      ))}
+                    {user && (
+                      <StyledAvatar size={64} icon={<img src={getImgUrl(user.username)} />} />
+                    )}
                   </Ele>
                 );
               })}

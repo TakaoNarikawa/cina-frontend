@@ -30,10 +30,13 @@ const StyledFooter = styled(Footer)`
   background-color: ${SITE_BACKGROUND_COLOR};
 `;
 
-const ContentWrapper = styled(Content)`
-  min-height: calc(100vh - ${HEADER_HEIGHT} - ${FOOTER_HEIGHT} - ${X_LARGE} - ${BASE});
+const ContentWrapper = styled(Content)<{ bg?: boolean }>`
+  min-height: calc(100vh - ${HEADER_HEIGHT});
   margin-top: ${HEADER_HEIGHT};
   padding: 0px ${PAGE_SIDE_PADDING};
+  ${(props) =>
+    props.bg &&
+    `background-image: url("https://img.freepik.com/free-vector/3-d_53876-87399.jpg?size=626&ext=jpg");`}
 `;
 
 const StyledLayout = styled(Layout)`
@@ -75,19 +78,21 @@ const Routes: React.FC = () => {
     console.log("token", token);
   }, [pathname]);
   return (
-    <Switch>
-      {pages.map(({ path, noPadding, View }, i) => (
-        <Route key={i} exact path={path}>
-          {noPadding ? (
-            <View />
-          ) : (
-            <PagePadding>
+    <ContentWrapper className="site-layout" bg={pathname == "/chatroom"}>
+      <Switch>
+        {pages.map(({ path, noPadding, View }, i) => (
+          <Route key={i} exact path={path}>
+            {noPadding ? (
               <View />
-            </PagePadding>
-          )}
-        </Route>
-      ))}
-    </Switch>
+            ) : (
+              <PagePadding>
+                <View />
+              </PagePadding>
+            )}
+          </Route>
+        ))}
+      </Switch>
+    </ContentWrapper>
   );
 };
 
@@ -119,14 +124,7 @@ const App: React.FC = () => {
 
         <Drawer onClose={handleCloseDrawer} visible={drawerVidible} />
 
-        <ContentWrapper className="site-layout">
-          <Routes />
-        </ContentWrapper>
-
-        <StyledFooter>
-          <p>Copyright© 2020</p>
-          <p>All Rights Reserve.</p>
-        </StyledFooter>
+        <Routes />
       </StyledLayout>
     </Router>
   );

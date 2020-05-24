@@ -20,6 +20,9 @@ const TEST = [
   { username: "Adam@foo.com", position: 2, self: true },
   { username: "Eve@foo.com", position: 1 },
   { username: "Bob@foo.com", position: 3 },
+  { username: "Adam@bar.com", position: 17 },
+  { username: "Eve@bar.com", position: 20 },
+  { username: "Bob@bar.com", position: 21 },
 ];
 
 const useUserInfo = (): [UserInfo[] | null, () => void] => {

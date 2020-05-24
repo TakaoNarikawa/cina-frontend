@@ -16,7 +16,7 @@ const ContentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: ${HUGE};
+  margin: ${HUGE};
 `;
 const StyledChatroomTable = styled(ChatroomTable)`
   margin: 0;
