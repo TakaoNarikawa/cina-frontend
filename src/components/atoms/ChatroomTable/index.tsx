@@ -56,7 +56,7 @@ type Props = {
 type TableElementProps = { available?: boolean; self?: boolean };
 
 const StyledAvatar = styled(Avatar)`
-  border: 2px solid #c0c0c0;
+  border: 1px solid #808080;
 `;
 const Table = styled.table`
   min-width: 350px;
@@ -68,7 +68,7 @@ const COMMON_STYLE = `
 `;
 const AVAILABLE_STYLE = `
   border: 1px solid #c0c0c0;
-  background-color: #fafafa;
+  background-color: rgba(255,255,255,0.8);
 `;
 const SELF_STYLE = `
   background-color: #e9f7fe;
@@ -105,7 +105,7 @@ const ChatroomTable: React.FC<Props> = ({ userInfo, onClick }) => {
                     }}
                   >
                     {user && (
-                      <StyledAvatar size={64} icon={<img src={getImgUrl(user.username)} />} />
+                      <StyledAvatar size={72} icon={<img src={getImgUrl(user.username)} />} />
                     )}
                   </Ele>
                 );
