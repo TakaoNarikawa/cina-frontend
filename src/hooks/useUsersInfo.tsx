@@ -16,15 +16,6 @@ const otherPositionURL = (e: string) =>
   API_HOSTNAME +
   `/api/v1/user_info/workspacetable/get_other_user_location?workspace=space1&email=${e}`;
 
-const TEST = [
-  { username: "Adam@foo.com", position: 2, self: true },
-  { username: "Eve@foo.com", position: 1 },
-  { username: "Bob@foo.com", position: 3 },
-  { username: "Adam@bar.com", position: 17 },
-  { username: "Eve@bar.com", position: 20 },
-  { username: "Bob@bar.com", position: 21 },
-];
-
 const useUserInfo = (): [UserInfo[] | null, () => void] => {
   const { token, email } = useContext(CinaContext);
   const [selfInfo, setSelfInfo] = useState<UserInfo | null>(null);
@@ -40,19 +31,13 @@ const useUserInfo = (): [UserInfo[] | null, () => void] => {
         },
       })
       .then((results) => {
-        console.log("success");
-        console.log(results);
-        // setOtherUserInfo(
-        //   results.data.map((r: any) => ({
-        //     username: r.email,
-        //     position: r.user_location,
-        //   }))
-        // );
+        setSelfInfo({
+          username: email!,
+          position: results.data.location,
+          self: true,
+        });
       })
-      .catch((err) => {
-        console.log(err);
-        console.log("error");
-      })
+      .catch((err) => {})
       .finally(() => {
         setSelfLoading(false);
       });
@@ -73,17 +58,16 @@ const useUserInfo = (): [UserInfo[] | null, () => void] => {
           }))
         );
       })
-      .catch((err) => {
-        console.log(err);
-      })
+      .catch((err) => {})
       .finally(() => {
         setOtherLoading(false);
       });
   };
 
   useEffect(loadUserInfo, []);
-  return [TEST, loadUserInfo];
-  return [selfLoading && otherLoading ? null : null, loadUserInfo];
+
+  const combined = [...otherUserInfo, selfInfo as UserInfo];
+  return [selfLoading || otherLoading ? null : combined, loadUserInfo];
 };
 
 export default useUserInfo;

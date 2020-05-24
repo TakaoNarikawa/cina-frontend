@@ -2,7 +2,7 @@ import { Button, Checkbox, Form, Modal, Typography } from "antd";
 import React, { useState, useCallback } from "react";
 import ProfileForm from "src/containers/ProfileForm";
 import PrivacyPolicy from "src/components/molecules/PrivacyPolicy";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import { BASE } from "src/utils/space";
 import styled from "styled-components";
 import { Alert } from "antd";

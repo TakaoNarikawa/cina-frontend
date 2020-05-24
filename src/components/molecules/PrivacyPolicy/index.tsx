@@ -5,7 +5,7 @@ import styled from "styled-components";
 const Wrapper = styled.div`
   margin: -${BASE};
   padding: ${BASE};
-  height: 60vh;
+  height: 30vh;
   overflow: scroll;
 `;
 

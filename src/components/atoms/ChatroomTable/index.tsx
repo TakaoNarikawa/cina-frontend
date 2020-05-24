@@ -67,8 +67,8 @@ const COMMON_STYLE = `
   height: 100px;
 `;
 const AVAILABLE_STYLE = `
-  border: 1px solid #c0c0c0;
-  background-color: rgba(255,255,255,0.8);
+  border: 1px solid rgba(100,100,100,0.1);
+  background-color: rgba(255,255,255,0.6);
 `;
 const SELF_STYLE = `
   background-color: #e9f7fe;
