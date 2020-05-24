@@ -119,12 +119,16 @@ export const useRoomStream = (roomId: string) => {
   return streams;
 };
 
-export const StreamPlayer: React.FC<{ stream: RoomStream }> = ({ stream }) => {
+export const StreamPlayer: React.FC<{ stream?: RoomStream; volume: number }> = ({
+  stream,
+  volume,
+}) => {
   const audioRef = useRef<HTMLAudioElement>(null);
   useEffect(() => {
-    if (audioRef.current) {
+    if (audioRef.current && stream) {
       audioRef.current.srcObject = stream;
+      audioRef.current.volume = volume;
     }
-  }, [stream.id]);
+  }, [stream?.id]);
   return <audio ref={audioRef} autoPlay />;
 };

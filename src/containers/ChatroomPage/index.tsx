@@ -91,17 +91,23 @@ const StreamPlayerManager: React.FC<{ streams: RoomStream[]; userInfo: UserInfo[
       username: v.username,
       distance: selfPosition ? distance(selfPosition, TABLE_COOR[k]) : null,
     }));
-
   const selectedStreams = distances.map((d) => ({
     username: d.username,
     distance: d.distance,
-    stream: streams.find((s) => s.peerId == d.username)!,
+    stream: streams.find((s) => {
+      return s.peerId == d.username;
+    }),
   }));
+
+  console.log(selectedStreams);
 
   return (
     <>
-      {streams.map((s) => (
-        <StreamPlayer stream={s} />
+      {selectedStreams.map((s) => (
+        <StreamPlayer
+          stream={s.stream}
+          volume={s.distance ? Math.min(Math.max(1 / Math.pow(s.distance, 2), 0.0), 1.0) : 0.0}
+        />
       ))}
     </>
   );
