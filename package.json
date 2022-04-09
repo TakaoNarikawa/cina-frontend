@@ -11,7 +11,7 @@
     "antd": "^4.0.2",
     "apollo-boost": "^0.4.7",
     "graphql": "^14.6.0",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "object-assign-deep": "^0.4.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
